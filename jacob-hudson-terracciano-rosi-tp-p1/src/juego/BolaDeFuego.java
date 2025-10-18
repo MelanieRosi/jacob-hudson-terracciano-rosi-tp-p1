@@ -1,23 +1,23 @@
 package juego;
 import java.awt.Color;
 import entorno.Entorno;
-
-public class Planta {
+public class BolaDeFuego {
 
 }
 
-//public class Planta {
+//public class BolaDeFuego {
 //	private double x;
 //	private int y;
 //	private int ancho;
 //	private int alto;
-//
+//	private double velocidad;
 //	
-//	public Planta(int x, int y, int ancho, int alto) {
+//	public BolaDeFuego(double x, int y, int ancho, int alto, double velocidad) {
 //		this.x = x;
 //		this.y = y;
 //		this.ancho = ancho;
 //		this.alto = alto;
+//		this.velocidad = velocidad;
 //	}
 //
 //	public double getX() {
@@ -38,13 +38,11 @@ public class Planta {
 //	
 //	public void dibujar(Entorno entorno)
 //	{
-//		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.GREEN);
+//		entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.RED);
 //	}
 //	
-//	public BolaDeFuego disparar()
+//	public void mover()
 //	{
-//		return new BolaDeFuego(this.x, this.y, 10, 10, 3);
+//		this.x += this.velocidad;
 //	}
-//	
-//	
 //}
