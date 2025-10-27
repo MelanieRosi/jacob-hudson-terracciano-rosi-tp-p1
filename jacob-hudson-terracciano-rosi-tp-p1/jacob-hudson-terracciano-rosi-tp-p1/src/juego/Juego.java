@@ -12,10 +12,15 @@ public class Juego extends InterfaceJuego
  // El objeto Entorno que controla el tiempo y otros
  private Entorno entorno;
  Image fondo;//AGREGADO
+ Image imgGrinch;
+ Image imgRosa; 
+ Image imgRegalo;
  Zombie[] zombies;
  Planta planta;
  BolaDeFuego bola;
- 
+ Regalo regalo;
+
+	
  // Variables y métodos propios de cada grupo
  // ...
  
@@ -23,18 +28,23 @@ public class Juego extends InterfaceJuego
  {
   // Inicializa el objeto entorno
   this.entorno = new Entorno(this, "La Invasión de los Zombies Grinch", 800, 600);
-  fondo = Herramientas.cargarImagen("imagenes/fondo.jpg");;
+  fondo = Herramientas.cargarImagen("imagenes/fondo.png");;
   
   this.zombies = new Zombie[5];
-  this.planta = new Planta(50, 300, 40, 60);
+  this.planta = new Planta(100, 357, 40, 60); //cordenadas de la rosa  (100x357 px + su tamañp
+  this.regalo = new Regalo (35, 160, 40, 60);
+   
   
   for(int i = 0; i < this.zombies.length; i++)
-   this.zombies[i] = new Zombie(750, 60 + 120*i, 60, 60, Math.random()+0.1);
+   this.zombies[i] = new Zombie(750, 159 + 98*i, 60, 60, Math.random()+0.1); 
+  //cada celda es de 98px, y la barra de menu es de 110px
+  //así que 110+(98/2)=159(la mitad de la primera celda) 
+  //sumando 98 cada vez, cada zombie queda en el medio de las celdas de cada fila
   
   //750 zombies empiezan de forma horizontal
   //60 + 120*i aparecen en filas fijas no aleatorias
   //velocidad aleatoria
-
+ 
   // Inicia el juego!
   this.entorno.iniciar();
  }
@@ -52,7 +62,10 @@ public class Juego extends InterfaceJuego
      entorno.dibujarImagen(fondo, 400, 300, 0); // 800x600 → centro en 400,300
      this.planta.dibujar(entorno);
    // Dibujar fondo en el centro
-    
+     
+     this.regalo.dibujar(entorno);
+  
+
   for(int i = 0; i < this.zombies.length; i++)
   {
    this.zombies[i].mover();
