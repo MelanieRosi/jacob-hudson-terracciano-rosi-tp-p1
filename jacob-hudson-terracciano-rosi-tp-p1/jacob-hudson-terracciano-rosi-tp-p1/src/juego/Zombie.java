@@ -14,7 +14,7 @@ public class Zombie {
 	private double velocidad;
 	double escala = 0.08;
 	Image imgGrinch;
-	
+	boolean muerto = false;
 	public Zombie(int x, int y, int ancho, int alto, double velocidad) {
 		this.x = x;
 		this.y = y;
@@ -25,22 +25,22 @@ public class Zombie {
 		  
 	}
 
-	public double getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getAncho() {
-		return ancho;
-	}
-
-	public int getAlto() {
-		return alto;
-	}
-	
+//	public double getX() {
+//		return x;
+//	}
+//
+//	public int getY() {
+//		return y;
+//	}
+//
+//	public int getAncho() {
+//		return ancho;
+//	}
+//
+//	public int getAlto() {
+//		return alto;
+//	}
+//	
 	public void dibujar(Entorno entorno)
 	{
 		//entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.GRAY);
@@ -51,6 +51,12 @@ public class Zombie {
 	{
 		this.x -= this.velocidad;
 	}
-	
-	
+//    public boolean estaMuerto() {
+//        return muerto;
+//    }
+//
+//    public void morir() {
+//        muerto = true;
+//    }
+//	
 }

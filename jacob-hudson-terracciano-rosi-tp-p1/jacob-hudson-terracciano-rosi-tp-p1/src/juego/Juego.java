@@ -24,6 +24,8 @@ public class Juego extends InterfaceJuego
 
  boolean inhArriba;
  boolean inhAbajo;
+ boolean inhIzquierda;
+ boolean inhDerecha;
  // Variables y métodos propios de cada grupo
  // ...
  
@@ -111,7 +113,12 @@ public class Juego extends InterfaceJuego
   //inhibiciones:
   this.inhAbajo=false;
   this.inhArriba=false;
+  this.inhDerecha = false;
+  this.inhIzquierda = false;
+
   /////////////////////////////////mover planta//////////////////////////////////////
+  if (entorno.estaPresionada(entorno.TECLA_DERECHA) && !inhDerecha) planta.mover(1, 0);
+  if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && !inhIzquierda) planta.mover(-1, 0);
   if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !inhArriba) planta.mover(0, -1);
   if (entorno.estaPresionada(entorno.TECLA_ABAJO) && !inhAbajo) planta.mover(0, 1); 
  

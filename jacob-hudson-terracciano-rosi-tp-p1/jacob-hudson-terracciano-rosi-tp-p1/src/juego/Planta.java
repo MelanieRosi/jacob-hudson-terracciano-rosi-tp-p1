@@ -17,7 +17,8 @@ public class Planta {
 	Entorno e;
 	double bordeSuperior;
 	double bordeInferior;
-		
+	double bordeIzquierdo;
+	double bordeDerecho;	
 	//public Planta(int x, int y, int ancho, int alto,Entorno e) {
 	public Planta(double x, double y, Entorno e) {
 		//super();
@@ -48,14 +49,23 @@ public class Planta {
 			  }
 	this.x +=dh;
 	this.y +=dv;
+	this.bordeDerecho=this.x+this.ancho/2;
+	this.bordeIzquierdo=this.x-this.ancho/2;
 	this.bordeSuperior=this.y-this.alto/2;
 	this.bordeInferior=this.y+this.alto/2;
 	
 	 if (bordeSuperior < 110) {
 	        this.y = 110 +this.alto / 2;
 	    }
-	    if (bordeInferior > 600) {
+	 if (bordeInferior > 600) {
 	        this.y = 600 - this.alto / 2;
+	    }
+	 
+	 if (bordeIzquierdo < 65) {
+	        this.x = 65 + this.ancho / 2;
+	    }
+	 if (bordeDerecho > 800) {
+	        this.x = 800 - this.ancho / 2;
 	    }
 	    
 	}
