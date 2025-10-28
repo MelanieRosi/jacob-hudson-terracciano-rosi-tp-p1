@@ -7,46 +7,62 @@ import entorno.Herramientas;
 
 public class Planta {
 	private double x;
-	private int y;
-	private int ancho;
-	private int alto;
-	double escala = 0.09;
+	private double y;
+	private double ancho;
+	private double alto;
+	//double escala = 0.09;
+	double escala;
+	boolean direccion;
 	Image imgRosa;
+	Entorno e;
+	double bordeSuperior;
+	double bordeInferior;
 		
-	public Planta(int x, int y, int ancho, int alto) {
+	//public Planta(int x, int y, int ancho, int alto,Entorno e) {
+	public Planta(double x, double y, Entorno e) {
+		//super();
 		this.x = x;
 		this.y = y;
-		this.ancho = ancho;
-		this.alto = alto;
-		
+		this.direccion = false;
+		this.escala = 0.09;
 		this.imgRosa = Herramientas.cargarImagen("imagenes/rosa.png");
+		this.alto = imgRosa.getHeight(null) * this.escala;
+		this.ancho = imgRosa.getWidth(null) * this.escala;
+		this.e=e;
+
 	}
 
-	public double getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public int getAncho() {
-		return ancho;
-	}
-
-	public int getAlto() {
-		return alto;
-	}
-	
-	public void dibujar(Entorno entorno)
+	//public void dibujar(Entorno entorno)
+	public void dibujar()
 	{
-		//entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.GREEN);
-		entorno.dibujarImagen(imgRosa, this.x, this.y, 0,escala);
+		e.dibujarImagen(imgRosa, this.x, this.y, 0,this.escala);
 	}
 	
-	public BolaDeFuego disparar() {
-		return new BolaDeFuego(this.x, this.y, 10, 10, 3);
+	public void mover(double dh,double dv) {
+		 if(dh >0.0) {
+			   this.direccion =true;
+			   
+			  }
+			  if(dh < 0.0) {
+			   this.direccion=false;
+			  }
+	this.x +=dh;
+	this.y +=dv;
+	this.bordeSuperior=this.y-this.alto/2;
+	this.bordeInferior=this.y+this.alto/2;
+	
+	 if (bordeSuperior < 110) {
+	        this.y = 110 +this.alto / 2;
+	    }
+	    if (bordeInferior > 600) {
+	        this.y = 600 - this.alto / 2;
+	    }
+	    
 	}
+
+//	public BolaDeFuego disparar() {
+//		return new BolaDeFuego(this.x, this.y, 10, 10, 3);
+//	}
 	
 	
 }

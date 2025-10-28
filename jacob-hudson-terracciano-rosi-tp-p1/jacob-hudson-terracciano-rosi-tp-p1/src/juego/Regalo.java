@@ -6,41 +6,30 @@ import entorno.Herramientas;
 
 public class Regalo {
 		private double x;
-		private int y;
-		private int ancho;
-		private int alto;
+		private double y;
+		private double ancho;
+		private double alto;
 		double escala = 0.30;
 		Image imgRegalo;
-			
-		public Regalo (int x, int y, int ancho, int alto) {
+		Entorno e;
+		double bordeDerecho;	
+		//double bordeIzquierdo;
+		public Regalo (double x, double y, Entorno e) {
 			this.x = x;
 			this.y = y;
-			this.ancho = ancho;
-			this.alto = alto;
-			
 			this.imgRegalo= Herramientas.cargarImagen("imagenes/regalo.PNG");
+			this.alto = imgRegalo.getHeight(null)*this.escala;
+			this.ancho = imgRegalo.getWidth(null)*this.escala;
+			this.e=e;
+			this.bordeDerecho=this.x+this.ancho/2;
+			//this.bordeIzquierdo=this.x-this.ancho/2;
 		}
 
-		public double getX() {
-			return x;
-		}
 
-		public int getY() {
-			return y;
-		}
-
-		public int getAncho() {
-			return ancho;
-		}
-
-		public int getAlto() {
-			return alto;
-		}
-		
-		public void dibujar(Entorno entorno)
+		public void dibujar()
 		{
 			//entorno.dibujarRectangulo(this.x, this.y, this.ancho, this.alto, 0, Color.GREEN);
-			entorno.dibujarImagen(imgRegalo, this.x, this.y, 0,escala);
+			e.dibujarImagen(imgRegalo, this.x, this.y, 0,this.escala);
 		}
 		
 		
