@@ -22,11 +22,13 @@ public class Juego extends InterfaceJuego
  Planta[] plantas;//plantas plantadas
  BolaDeFuego bola;
  Regalo[] regalo;
-
+ long tiempoInicio; //momento en que comienza el juego
+ 
  boolean inhArriba;
  boolean inhAbajo;
  boolean inhIzquierda;
  boolean inhDerecha;
+ 
  boolean rosaSeleccionada =false;
  boolean puedeSeleccionar = true;
  long tiempoSeleccion = 0;
@@ -54,7 +56,7 @@ public class Juego extends InterfaceJuego
   
   this.zombies = new Zombie[5];
 
-  this.planta = new Planta(100, 357,entorno);   //cordenadas de la rosa que aparece primera (100x357 px + su tamaño)
+  //this.planta = new Planta (100, 357,entorno);   //cordenadas de la rosa que aparece primera (100x357 px + su tamaño)
   this.plantas = new Planta[50];// Arreglo fijo de plantas colocadas (por ejemplo, hasta 10)
  
 
@@ -70,11 +72,14 @@ public class Juego extends InterfaceJuego
   //así que 110+(98/2)=159(la mitad de la primera celda) 
   //sumando 98 cada vez, cada regalo queda en el medio de las celdas de cada fila
  
+   this.tiempoInicio = System.currentTimeMillis(); //cronómetro empieza desde que se ejecuta el juego.
+   
+   
   //imgVictoria = Herramientas.cargarImagen("imagenes/victoria.png");
   //imgDerrota = Herramientas.cargarImagen("imagenes/derrota.png"); 
   
   // Inicia el juego!
-  this.entorno.iniciar();
+ this.entorno.iniciar(); 
  }
 
  /**
@@ -92,8 +97,9 @@ public class Juego extends InterfaceJuego
    //entorno.dibujarImagen(fondo, 400, 300, 0); // 800x600 → centro en 400,300
 	 entorno.dibujarImagen(fondo, entorno.ancho() / 2, entorno.alto() / 2, 0, 1);
 	 
-//dibujar planta	 
-     this.planta.dibujar();
+//dibujar planta:planta principal de prueba, borrar para entrega	 
+//     this.planta.dibujar();
+	 
 //dibujar zombie	    
 	  for(int i = 0; i < this.zombies.length; i++)
 	  {
@@ -106,6 +112,37 @@ public class Juego extends InterfaceJuego
 		 this.regalo[i].dibujar();
 	  }
 ///////////////////////////////
+//detectar clic izquierdo en rosas:
+	  if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
+		  int mx = entorno.mouseX();
+		  int my = entorno.mouseY();
+		  boolean clicEnPlanta = false;
+
+//verificar si el click fue sobre una planta
+	  for (int i = 0; i < plantas.length; i++) {
+		  if (plantas[i] != null) {
+			  double dx = Math.abs(plantas[i].getX() - mx);
+			  double dy = Math.abs(plantas[i].getY() - my);
+		  if (dx < 30 && dy < 30) { // margen de clic
+		                // Selecciona solo esa planta
+	  for (int j = 0; j < plantas.length; j++) {
+		  if (plantas[j] != null) plantas[j].deseleccionar();
+		   }
+		       plantas[i].seleccionar();
+		       clicEnPlanta = true;
+		       break;
+		  }
+	 }
+}
+
+//si no clickeó una planta ni la carta de rosa --> deseleccionar todas
+	  if (!clicEnPlanta && !(mx >= 0 && mx <= 90 && my >= 0 && my <= 110)) {
+		 for (int i = 0; i < plantas.length; i++) {
+		     if (plantas[i] != null) plantas[i].deseleccionar();
+		}
+	}
+}
+
 //dibujar plantas plantadas
 	  
 	  for (int i = 0; i < plantas.length; i++) {
@@ -119,7 +156,7 @@ public class Juego extends InterfaceJuego
 		  int mx = entorno.mouseX();
 		  int my = entorno.mouseY();
 
-//Click del boton del mouse izquierdo en la "carta" de la rosa (zona 0–90 x 0–110 pixeles)
+//click del botón del mouse izquierdo en la "carta" de la rosa (zona 0–90 x 0–110 pixeles)
 		  
 	  if (puedeSeleccionar && mx >= 0 && mx <= 90 && my >= 0 && my <= 110) {
 		  rosaSeleccionada = true;
@@ -129,7 +166,7 @@ public class Juego extends InterfaceJuego
 	  else if (rosaSeleccionada && my > 110) {
 		  boolean ocupado = false;
 		  
-//Verificar que no haya zombie cerca
+//verificar que no haya zombie cerca
 		  
 	  for (int i = 0; i < zombies.length; i++) {
 		  if (Math.abs(zombies[i].getX() - mx) < 50 && Math.abs(zombies[i].getY() - my) < 50) {
@@ -139,7 +176,7 @@ public class Juego extends InterfaceJuego
 	  }
 
 	  if (!ocupado) {
-//Alinear posición de las rosas a las casillas 5x10
+//alinear posición de las rosas a las casillas 5x10
 
 		int filas = 5;
 		int columnas = 10;
@@ -173,7 +210,7 @@ public class Juego extends InterfaceJuego
 
 			rosaSeleccionada = false;
 		}
-	  }
+	}
 //actualizar plantas:
 	  
 		for (int i = 0; i < plantas.length; i++) {
@@ -222,34 +259,95 @@ public class Juego extends InterfaceJuego
   this.inhDerecha = false;
   this.inhIzquierda = false;
 
-  //mover rosas con las flechas del teclado
-  if (entorno.estaPresionada(entorno.TECLA_DERECHA) && !inhDerecha) planta.mover(1, 0);
-  if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && !inhIzquierda) planta.mover(-1, 0);
-  if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !inhArriba) planta.mover(0, -1);
-  if (entorno.estaPresionada(entorno.TECLA_ABAJO) && !inhAbajo) planta.mover(0, 1); 
+//mover rosas con las flechas del teclado
+//  if (entorno.estaPresionada(entorno.TECLA_DERECHA) && !inhDerecha) planta.mover(1, 0);
+//  if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA) && !inhIzquierda) planta.mover(-1, 0);
+//  if (entorno.estaPresionada(entorno.TECLA_ARRIBA) && !inhArriba) planta.mover(0, -1);
+//  if (entorno.estaPresionada(entorno.TECLA_ABAJO) && !inhAbajo) planta.mover(0, 1); 
  
-///////////////////////////////////////////////////////////////////////////////
-// ------------------ INFORMACION DEL JUEGO ------------------
-//entorno.cambiarFont("Times New Roman", 25, Color.white);
-//entorno.escribirTexto(zombiesEliminados, 430, 20);
-//entorno.cambiarFont("Times New Roman", 25, Color.GREEN);
-//entorno.escribirTexto(zombiesRestantes, 420, 60);
-//entorno.cambiarFont("Times New Roman", 25, Color.white);
-//entorno.escribirTexto(tiempoContador, 428, 100); 
-
   
- //ejemplos estaticos para visualizar, la barra funcional seria la que está arriba comentada
-	entorno.cambiarFont("Times New Roman", 25, Color.white);
+//mover la planta seleccionada con las flechas del teclado
+  	for (int i = 0; i < plantas.length; i++) {
+  		if (plantas[i] != null && plantas[i].rosaSeleccionada) {
+
+  			double nuevoX = plantas[i].getX();
+  			double nuevoY = plantas[i].getY();
+
+       if (entorno.estaPresionada(entorno.TECLA_DERECHA)) nuevoX += 5;
+       if (entorno.estaPresionada(entorno.TECLA_IZQUIERDA)) nuevoX -= 5;
+       if (entorno.estaPresionada(entorno.TECLA_ARRIBA)) nuevoY -= 5;
+       if (entorno.estaPresionada(entorno.TECLA_ABAJO)) nuevoY += 5;
+
+       //comprobar si la nueva posición es válida antes de mover:
+       if (posicionValida(nuevoX, nuevoY, i)) {
+           plantas[i].mover(nuevoX - plantas[i].getX(), nuevoY - plantas[i].getY());
+       }
+
+       break; //solo una planta se mueve
+   }
+}
+  
+  
+  
+///////////////////////////////////////////////////////////////////////////////
+//informacion del juego estatica para ejemplo de posicion y tamaño
+  	entorno.cambiarFont("Times New Roman", 25, Color.white);
 	entorno.escribirTexto("30", 430, 20); 
 	entorno.cambiarFont("Times New Roman", 25, Color.white);
 	entorno.escribirTexto("15", 420, 60);
-	entorno.cambiarFont("Times New Roman", 25, Color.white);
-	entorno.escribirTexto("00:00", 428, 100);
+	
+//reloj
+//calcular tiempo transcurrido en segundos
+  	long tiempoActual = System.currentTimeMillis();
+  	long tiempoTranscurrido = (tiempoActual - tiempoInicio) / 1000; // en segundos
 
+//convertir a minutos y segundos
+  	long minutos = tiempoTranscurrido / 60;
+  	long segundos = tiempoTranscurrido % 60;
 
+//formatear en mm:ss (ej: 03:07)
+  	String tiempoFormateado = String.format("%02d:%02d", minutos, segundos);
+  	
+//mostrar reloj  	
+  	entorno.cambiarFont("Times New Roman", 25, Color.white);
+  	entorno.escribirTexto(tiempoFormateado, 428, 100);
+  	
+  	
+  	
+  	
+ 
+//fin del tick()  
+}
+ 
+ private boolean posicionValida(double x, double y, int indicePlanta) {
+//límites del tablero
+	  if (x < 65 || x > 800 - 30) return false;
+	  if (y < 110 || y > 600 - 30) return false;
+	  
+//colisión con otras plantas cuando la rosa seleccionada esta en movimiento
+	  for (int i = 0; i < plantas.length; i++) {
+	      if (i != indicePlanta && plantas[i] != null) {
+	          double dx = Math.abs(plantas[i].getX() - x);
+	          double dy = Math.abs(plantas[i].getY() - y);
+	          if (dx < 40 && dy < 40) {
+	              return false; //ocupado por otra planta
+	        }
+	  }
  }
 
+//colisión con zombies cuandp la rosa esta en movimiento
+	  for (int i = 0; i < zombies.length; i++) {
+	      if (zombies[i] != null) {
+	          double dx = Math.abs(zombies[i].getX() - x);
+	          double dy = Math.abs(zombies[i].getY() - y);
+	          if (dx < 40 && dy < 40) {
+	              return false; //ocupado por un zombie
+	          }
+	   }
+ }
 
+	  return true; //se puede mover
+}
  @SuppressWarnings("unused")
  public static void main(String[] args)
  {

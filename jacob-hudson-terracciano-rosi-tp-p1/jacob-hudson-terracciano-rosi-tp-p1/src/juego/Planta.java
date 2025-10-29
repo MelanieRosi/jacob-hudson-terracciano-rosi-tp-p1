@@ -19,8 +19,6 @@ public class Planta {
 	double bordeIzquierdo;
 	double bordeDerecho;
 	boolean rosaSeleccionada;
-
-    //int areaEfecto;
 	 
 	//public Planta(int x, int y, int ancho, int alto,Entorno e) {
 	public Planta(double x, double y, Entorno e) {
@@ -40,17 +38,18 @@ public class Planta {
 	public void dibujar()
 	{
 		e.dibujarImagen(imgRosa, this.x, this.y, 0,this.escala);
+		//para probar el correcto funcionamiento de la seleccion, borrar para la entrega
+//		if (rosaSeleccionada) {
+//		    e.dibujarRectangulo(this.x, this.y, this.ancho + 10, this.alto + 10, 0, Color.yellow);
+//		}
 	}
 	
 	public void mover(double dh,double dv) {
-		
+	//delimitacion de bordes con los que colisiona la rosa al moverse	
 	if(dh >0.0) {this.direccion =true;}
 	if(dh < 0.0) {this.direccion=false;}
-	
-	
 	this.x +=dh;
 	this.y +=dv;
-	
 	this.bordeDerecho=this.x+this.ancho/2;
 	this.bordeIzquierdo=this.x-this.ancho/2;
 	this.bordeSuperior=this.y-this.alto/2;
