@@ -39,9 +39,9 @@ public class Planta {
 	{
 		e.dibujarImagen(imgRosa, this.x, this.y, 0,this.escala);
 		//para probar el correcto funcionamiento de la seleccion, borrar para la entrega
-//		if (rosaSeleccionada) {
-//		    e.dibujarRectangulo(this.x, this.y, this.ancho + 10, this.alto + 10, 0, Color.yellow);
-//		}
+		if (rosaSeleccionada) {
+		    e.dibujarRectangulo(this.x, this.y, this.ancho + 10, this.alto + 10, 0, Color.yellow);
+		}
 	}
 	
 	public void mover(double dh,double dv) {
@@ -89,5 +89,7 @@ public class Planta {
 //		return new BolaDeFuego(this.x, this.y, 10, 10, 3);
 //	}
 	
-	
+    public BolaDeFuego disparar() {
+        return new BolaDeFuego(this.x + 25, (int)this.y, 10, 10, 3);
+    }
 }

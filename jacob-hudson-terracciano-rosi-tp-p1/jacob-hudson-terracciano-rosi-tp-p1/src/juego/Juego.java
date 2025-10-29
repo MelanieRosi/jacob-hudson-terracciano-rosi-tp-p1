@@ -17,18 +17,26 @@ public class Juego extends InterfaceJuego
  Image imgRegalo;
  //Image imgVictoria;
  //Image imgDerrota;
+ //-----------------
  Zombie[] zombies;
+ //-----------------
  Planta planta;
  Planta[] plantas;//plantas plantadas
+ //----------------- 
  BolaDeFuego bola;
+ BolaDeFuego[] bolas;
+ long ultimoDisparo = 0;
+ final long intervaloDisparo = 1000; // cada 1 segundo
+ //-----------------
  Regalo[] regalo;
+ //-----------------
  long tiempoInicio; //momento en que comienza el juego
- 
+ //-----------------
  boolean inhArriba;
  boolean inhAbajo;
  boolean inhIzquierda;
  boolean inhDerecha;
- 
+//-----------------
  boolean rosaSeleccionada =false;
  boolean puedeSeleccionar = true;
  long tiempoSeleccion = 0;
@@ -67,11 +75,13 @@ public class Juego extends InterfaceJuego
    this.regalo = new Regalo[5];
    for(int i = 0; i < this.regalo.length; i++)
 	   this.regalo[i] = new Regalo(30, 150 + 98*i, entorno); 
-  
+ 
   //cada celda es de 98px, y la barra de menu es de 110px
   //así que 110+(98/2)=159(la mitad de la primera celda) 
   //sumando 98 cada vez, cada regalo queda en el medio de las celdas de cada fila
  
+   this.bolas = new BolaDeFuego[200];// Por ejemplo, hasta 200 bolas activas al mismo tiempo
+   
    this.tiempoInicio = System.currentTimeMillis(); //cronómetro empieza desde que se ejecuta el juego.
    
    
@@ -112,6 +122,7 @@ public class Juego extends InterfaceJuego
 		 this.regalo[i].dibujar();
 	  }
 ///////////////////////////////
+
 //detectar clic izquierdo en rosas:
 	  if (entorno.sePresionoBoton(entorno.BOTON_IZQUIERDO)) {
 		  int mx = entorno.mouseX();
@@ -143,6 +154,38 @@ public class Juego extends InterfaceJuego
 	}
 }
 
+//disparo automático de todas las rosas
+	  long ahora = System.currentTimeMillis();
+	  if (ahora - ultimoDisparo > intervaloDisparo) {
+		  for (int i = 0; i < plantas.length; i++) {
+			  if (plantas[i] != null) {
+				  BolaDeFuego nueva = plantas[i].disparar();
+
+	      for (int j = 0; j < bolas.length; j++) {
+	          if (bolas[j] == null) {
+	        	  bolas[j] = nueva;
+	              	break;
+	                }
+	            }
+	        }
+	    }
+	    ultimoDisparo = ahora;
+}
+	
+//Mover y dibujar las bolas
+
+	  for (int i = 0; i < bolas.length; i++) {
+		  if (bolas[i] != null) {
+			  bolas[i].mover();
+			  bolas[i].dibujar(entorno);
+
+	        // Si sale de la pantalla, eliminarla
+	      if (bolas[i].getX() > 800) {
+	          bolas[i] = null;
+	        }
+	  }
+}
+	  
 //dibujar plantas plantadas
 	  
 	  for (int i = 0; i < plantas.length; i++) {
@@ -174,10 +217,9 @@ public class Juego extends InterfaceJuego
 			      break;
 		  }
 	  }
-
-	  if (!ocupado) {
+	  
 //alinear posición de las rosas a las casillas 5x10
-
+	  if (!ocupado) {
 		int filas = 5;
 		int columnas = 10;
 		double altoCelda = 98;
