@@ -39,9 +39,9 @@ public class Planta {
 	{
 		e.dibujarImagen(imgRosa, this.x, this.y, 0,this.escala);
 		//para probar el correcto funcionamiento de la seleccion, borrar para la entrega
-		if (rosaSeleccionada) {
-		    e.dibujarRectangulo(this.x, this.y, this.ancho + 10, this.alto + 10, 0, Color.yellow);
-		}
+//		if (rosaSeleccionada) {
+//		    e.dibujarRectangulo(this.x, this.y, this.ancho + 10, this.alto + 10, 0, Color.yellow);
+//		}
 	}
 	
 	public void mover(double dh,double dv) {

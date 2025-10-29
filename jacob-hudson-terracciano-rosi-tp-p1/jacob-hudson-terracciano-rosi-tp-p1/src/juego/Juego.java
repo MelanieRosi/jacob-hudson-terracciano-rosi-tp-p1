@@ -336,7 +336,7 @@ public class Juego extends InterfaceJuego
   	entorno.cambiarFont("Times New Roman", 25, Color.white);
 	entorno.escribirTexto("30", 430, 20); 
 	entorno.cambiarFont("Times New Roman", 25, Color.white);
-	entorno.escribirTexto("15", 420, 60);
+	entorno.escribirTexto("15", 415, 60);
 	
 //reloj
 //calcular tiempo transcurrido en segundos
@@ -352,7 +352,7 @@ public class Juego extends InterfaceJuego
   	
 //mostrar reloj  	
   	entorno.cambiarFont("Times New Roman", 25, Color.white);
-  	entorno.escribirTexto(tiempoFormateado, 428, 100);
+  	entorno.escribirTexto(tiempoFormateado, 433, 100);
   	
   	
   	
