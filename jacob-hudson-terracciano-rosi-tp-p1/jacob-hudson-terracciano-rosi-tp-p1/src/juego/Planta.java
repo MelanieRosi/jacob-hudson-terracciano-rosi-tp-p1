@@ -10,7 +10,6 @@ public class Planta {
 	private double y;
 	private double ancho;
 	private double alto;
-	//double escala = 0.09;
 	double escala;
 	boolean direccion;
 	Image imgRosa;
@@ -18,7 +17,11 @@ public class Planta {
 	double bordeSuperior;
 	double bordeInferior;
 	double bordeIzquierdo;
-	double bordeDerecho;	
+	double bordeDerecho;
+	boolean rosaSeleccionada;
+
+    //int areaEfecto;
+	 
 	//public Planta(int x, int y, int ancho, int alto,Entorno e) {
 	public Planta(double x, double y, Entorno e) {
 		//super();
@@ -30,7 +33,7 @@ public class Planta {
 		this.alto = imgRosa.getHeight(null) * this.escala;
 		this.ancho = imgRosa.getWidth(null) * this.escala;
 		this.e=e;
-
+		this.rosaSeleccionada = false;
 	}
 
 	//public void dibujar(Entorno entorno)
@@ -40,15 +43,14 @@ public class Planta {
 	}
 	
 	public void mover(double dh,double dv) {
-		 if(dh >0.0) {
-			   this.direccion =true;
-			   
-			  }
-			  if(dh < 0.0) {
-			   this.direccion=false;
-			  }
+		
+	if(dh >0.0) {this.direccion =true;}
+	if(dh < 0.0) {this.direccion=false;}
+	
+	
 	this.x +=dh;
 	this.y +=dv;
+	
 	this.bordeDerecho=this.x+this.ancho/2;
 	this.bordeIzquierdo=this.x-this.ancho/2;
 	this.bordeSuperior=this.y-this.alto/2;
@@ -69,7 +71,21 @@ public class Planta {
 	    }
 	    
 	}
+	public double getX() {
+	    return this.x;
+	}
 
+	public double getY() {
+	    return this.y;
+	}
+
+    public void seleccionar() {
+        this.rosaSeleccionada = true;
+    }
+
+    public void deseleccionar() {
+        this.rosaSeleccionada = false;
+    }
 //	public BolaDeFuego disparar() {
 //		return new BolaDeFuego(this.x, this.y, 10, 10, 3);
 //	}
